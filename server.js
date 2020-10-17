@@ -1,40 +1,39 @@
- var express = require('express');
-
+ var express = require('express')
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
-const embassy = require('./data/minato_taishikan.json');
-console.log(embassy.features)
-//var data = require('./data');
-//console.log(data.features)
+const embassyData= require('./data/minato_taishikan.json');
+console.log(embassyData)
 
-/* 
+
 var schema = buildSchema(`
   
-type City {
-    town: String
-    population: Int
-    quote: String
+type Feature {
+   type: String!
+   geometry: Geometry
+   properties: Embassy
 }
 
+type Geometry {
+    type: String!
+    coordinates: [Float]
+}
+
+type Embassy {
+    name: String!
+    pc: String!
+    curL: String!
+    phone: String!
+}
 
 type Query {
-    allCityData: [City]
-    town: String
-    population: Int
-    quote: String
+    all: [Feature]
   }
 `);
 
 var root = { 
-    
-    town: ()=> {
-        return "Columbus";
-    },
-    population: () => {
-        return 195769;
-    },
-    quote: () => {
-        return "Where there is no vision, there is no hope.";
+    all: () => {
+        ///et info = arrayOfEmbassies.map(data => data.properties);
+        return embassyData.features;
     }
 };
 
@@ -44,9 +43,11 @@ app.use('/graphql', graphqlHTTP({
   rootValue: root,
   graphiql: true,
 }));
-app.listen(4000);
-console.log('Running a GraphQL API server at localhost:4000/graphql'); 
+app.listen(5000);
+console.log('Running a GraphQL API server at localhost:5000/graphql');
 
+
+/*
 var express = require('express');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
